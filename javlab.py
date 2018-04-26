@@ -2,18 +2,16 @@
 import re
 import urllib
 import urllib2
+import time
  
-url = 'http://www.javlibrary.com/tw/vl_bestrated.php'
-#url = 'http://www.cool18.com/bbs4/index.php'
-#url ='http://g.91p11.space/viewthread.php?tid=272348'
+url = 'http://www.javlibrary.com/tw/vl_bestrated.php?&mode=&page='
 user_agent = 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)'
 headers = { 'User-Agent' : user_agent }
 
-def getdata(url=url, headers=headers):
+def getdata(url=url, headers=headers, page=2):
     try:
-        request = urllib2.Request(url,headers = headers)
+        request = urllib2.Request(url+str(page),headers = headers)
         response = urllib2.urlopen(request)
-#    print response.read()
         with open('file.txt','wb') as f:
             f.write(response.read())
     except urllib2.URLError, e:
@@ -39,7 +37,16 @@ def getav(data):
         print "----------------------"
 
 if __name__ == "__main__":
-    getdata()
-    with open('file.txt','rb') as f:
-        data = f.read()
-    getav(data)
+#    getdata()
+#    with open('file.txt','rb') as f:
+#        data = f.read()
+#    getav(data)
+    for i in range(5):
+        if i > 0:
+            print "+++++++======================++++++++"
+            print u"第 %s 页" % str(i)
+            getdata(page=i)
+            with open('file.txt','rb') as f:
+                data = f.read()
+            getav(data)
+            time.sleep(10)
